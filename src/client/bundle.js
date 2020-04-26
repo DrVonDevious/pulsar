@@ -716,6 +716,7 @@ socket.on("user_connect", (s) => {
   queryPlayers(world);
 });
 
+// When a user disconnects delete that entity
 socket.on("user_disconnect", (data) => {
   console.log("A user has disconnected from the game");
   var entities = world.queryComponents([components.Position, components.SocketID]);
@@ -724,6 +725,7 @@ socket.on("user_disconnect", (data) => {
   queryPlayers(world);
 });
 
+// Whenever anything about the player changes, send them to the server
 socket.on("update_entity", (entity) => {
   var entities = world.queryComponents([components.SocketID]);
   var i = entities.findIndex(e => e.socketID.id === entity.id);
@@ -740,6 +742,8 @@ const westBtn = document.getElementsByClassName("west-btn");
 
 // The game screen where everything is drawn
 const canvas = document.querySelector(".game-screen");
+canvas.width = 512;
+canvas.height = 512;
 
 // What happens when a user presses a button
 quitBtn[0].addEventListener("click", () => { running = false });
@@ -750,33 +754,29 @@ westBtn[0].addEventListener("click", () => handlePlayerMove(player, "w"));
 
 const handlePlayerMove = (player, dir) => {
   switch(dir) {
-    case "n":
-      player.position.y -= 1;
-      break
-    case "s":
-      player.position.y += 1;
-      break
-    case "e":
-      player.position.x += 1;
-      break
-    case "w":
-      player.position.x -= 1;
-      break
+    case "n": player.position.y -= 16; break
+    case "s": player.position.y += 16; break
+    case "e": player.position.x += 16; break
+    case "w": player.position.x -= 16; break
   };
   socket.emit("player_update", {x: player.position.x, y: player.position.y});
 };
 
+// Redraws the canvas
 const draw = (entities) => {
   var ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(-player.position.x + canvas.width / 2, -player.position.y + canvas.height / 2);
   ctx.font = "16px Arial";
   ctx.fillStyle = "white";
-  ctx.clearRect(0, 0, 400, 400);
   entities.forEach(e => {
     if (e.hasComponent(components.Position)) {
       e.hasComponent(components.SocketID) ? ctx.fillStyle = "teal" : null;
-      ctx.fillText("@", e.position.x * 16, e.position.y * 16);
+      ctx.fillText("@", e.position.x, e.position.y);
     };
   });
+  ctx.restore();
 };
 
 running = true;
@@ -791,6 +791,7 @@ const tick = () => {
   draw(players);
 };
 
+// Tick 6 frames per second
 const game_loop = setInterval(tick, 1000/6);
 
 

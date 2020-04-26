@@ -62,6 +62,8 @@ const westBtn = document.getElementsByClassName("west-btn");
 
 // The game screen where everything is drawn
 const canvas = document.querySelector(".game-screen");
+canvas.width = 512;
+canvas.height = 512;
 
 // What happens when a user presses a button
 quitBtn[0].addEventListener("click", () => { running = false });
@@ -83,15 +85,18 @@ const handlePlayerMove = (player, dir) => {
 // Redraws the canvas
 const draw = (entities) => {
   var ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(-player.position.x + canvas.width / 2, -player.position.y + canvas.height / 2);
   ctx.font = "16px Arial";
   ctx.fillStyle = "white";
-  ctx.clearRect(0, 0, 400, 400);
   entities.forEach(e => {
     if (e.hasComponent(components.Position)) {
       e.hasComponent(components.SocketID) ? ctx.fillStyle = "teal" : null;
       ctx.fillText("@", e.position.x, e.position.y);
     };
   });
+  ctx.restore();
 };
 
 running = true;
