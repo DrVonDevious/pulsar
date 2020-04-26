@@ -55,10 +55,6 @@ socket.on("update_entity", (entity) => {
 
 // All of our UI buttons
 const quitBtn = document.getElementsByClassName("quit-btn");
-const northBtn = document.getElementsByClassName("north-btn");
-const southBtn = document.getElementsByClassName("south-btn");
-const eastBtn = document.getElementsByClassName("east-btn");
-const westBtn = document.getElementsByClassName("west-btn");
 
 // The game screen where everything is drawn
 const canvas = document.querySelector(".game-screen");
@@ -67,10 +63,19 @@ canvas.height = 512;
 
 // What happens when a user presses a button
 quitBtn[0].addEventListener("click", () => { running = false });
-northBtn[0].addEventListener("click", () => handlePlayerMove(player, "n"));
-southBtn[0].addEventListener("click", () => handlePlayerMove(player, "s"));
-eastBtn[0].addEventListener("click", () => handlePlayerMove(player, "e"));
-westBtn[0].addEventListener("click", () => handlePlayerMove(player, "w"));
+
+document.addEventListener("keydown", event => {
+  switch(event.isComposing || event.keyCode) {
+    case 87:
+      handlePlayerMove(player, "n"); break
+    case 83:
+      handlePlayerMove(player, "s"); break
+    case 68:
+      handlePlayerMove(player, "e"); break
+    case 65:
+      handlePlayerMove(player, "w"); break
+  }
+});
 
 const handlePlayerMove = (player, dir) => {
   switch(dir) {
