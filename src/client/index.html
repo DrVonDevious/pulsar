@@ -2,24 +2,28 @@
 <html>
   <head>
     <title>Pulsar - v0.1a</title>
+    <style src="./index.css"></style>
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
 
   <body>
-    <h1>Pulsar - v0.1a</h1>
-    <canvas
-      class="game-screen" 
-      style="
-        width: 400px;
-        height: 400px;
-        background-color: black;
-      "
-    ></canvas>
-    <br>
-    <button class="quit-btn">Quit Game</button>
-    <button class="north-btn">N</button>
-    <button class="south-btn">S</button>
-    <button class="east-btn">E</button>
-    <button class="west-btn">W</button>
+    <canvas class="game-screen"></canvas>
+
+    <div class="control-panel">
+      <button class="quit-btn">Quit Game</button>
+      <button class="chat-btn">Chat</button>
+    </div>
+
+    <div class="message-panel">
+      <form class="message-form">
+        <input class="message-input" />
+      </form>
+    </div>
+
+    <div class="skill-bar">
+      <button class="skill-slot">skill1</button>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="bundle.js"></script>
   </body>

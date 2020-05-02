@@ -55,6 +55,7 @@ socket.on("update_entity", (entity) => {
 
 // All of our UI buttons
 const quitBtn = document.getElementsByClassName("quit-btn");
+const messageInput = document.querySelector(".message-form");
 
 // The game screen where everything is drawn
 const canvas = document.querySelector(".game-screen");
@@ -63,6 +64,7 @@ canvas.height = 512;
 
 // What happens when a user presses a button
 quitBtn[0].addEventListener("click", () => { running = false });
+messageInput.addEventListener("submit", (e) => handleSendMessage(e));
 
 document.addEventListener("keydown", event => {
   switch(event.isComposing || event.keyCode) {
@@ -85,6 +87,11 @@ const handlePlayerMove = (player, dir) => {
     case "w": player.position.x -= 16; break
   };
   socket.emit("player_update", {x: player.position.x, y: player.position.y});
+};
+
+const handleSendMessage = (e) => {
+  e.preventDefault();
+  console.log(e);
 };
 
 // Redraws the canvas

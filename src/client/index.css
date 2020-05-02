@@ -1,0 +1,46 @@
+
+body {
+  display: block;
+  background-color: #444;
+  margin: 0;
+}
+
+.game-screen {
+  float: left;
+  width: 71%;
+  height: 74vh;
+  background-color: black;
+}
+
+.skill-bar {
+  position: absolute;
+  top: 97.7%;
+  width: 71%;
+  background-color: green;
+}
+
+.control-panel {
+  background-color: gray;
+  width: 29%;
+  height: 100vh;
+  float: right;
+}
+
+.message-panel {
+  position: absolute;
+  background-color: #333;
+  top: 74%;
+  height: 24%;
+  width: 71%;
+}
+
+.message-form {
+  position: relative;
+  top: 88%;
+}
+
+.message-input {
+  background-color: black;
+  color: white;
+  width: 99.4%;
+}
