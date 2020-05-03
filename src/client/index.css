@@ -27,16 +27,19 @@ body {
 }
 
 .message-panel {
+  color: white;
   position: absolute;
+  overflow: scroll;
   background-color: #333;
   top: 74%;
-  height: 24%;
+  height: 23%;
   width: 71%;
 }
 
 .message-form {
-  position: relative;
-  top: 88%;
+  position: absolute;
+  top: 95.4%;
+  width: 71%;
 }
 
 .message-input {

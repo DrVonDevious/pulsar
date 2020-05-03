@@ -48,6 +48,11 @@ io.sockets.on("connection", (socket) => {
     socket.y = obj.y;
     socket.broadcast.emit("update_entity", {id: socket.id, x: socket.x, y: socket.y});
   });
+
+  socket.on("player_msg_send", (msg) => {
+    io.emit("player_msg_receive", `${socket.id} says: ${msg}`);
+  });
+
 });
 
 server.listen(port);

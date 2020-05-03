@@ -687,6 +687,12 @@ const socket = io();
 var world = nano();
 var running = false;
 
+// All of our UI buttons
+const quitBtn = document.getElementsByClassName("quit-btn");
+const messagePanel = document.querySelector(".message-panel");
+const messageForm = document.querySelector(".message-form");
+const messageInput = document.querySelector(".message-input");
+
 // Updates the list of players
 const queryPlayers = (world) => {
   return players = world.queryTag("player");
@@ -700,7 +706,17 @@ console.log("Connection to server successful!");
 
 // When the server sends a message we want to see it!
 socket.on("serverMsg", (msg) => {
-  console.log(msg);
+  var message_label = document.createElement("p");
+  message_label.innerText = msg;
+  messagePanel.append(message_label)
+  messagePanel.scrollTop = messagePanel.scrollHeight;
+});
+
+socket.on("player_msg_receive", (msg) => {
+  var message_label = document.createElement("p");
+  message_label.innerText = msg;
+  messagePanel.append(message_label)
+  messagePanel.scrollTop = messagePanel.scrollHeight;
 });
 
 // Gets all the players already connected from before
@@ -733,9 +749,6 @@ socket.on("update_entity", (entity) => {
   entities[i].position.y = entity.y;
 });
 
-// All of our UI buttons
-const quitBtn = document.getElementsByClassName("quit-btn");
-
 // The game screen where everything is drawn
 const canvas = document.querySelector(".game-screen");
 canvas.width = 512;
@@ -743,17 +756,20 @@ canvas.height = 512;
 
 // What happens when a user presses a button
 quitBtn[0].addEventListener("click", () => { running = false });
+messageForm.addEventListener("submit", (e) => handleSendMessage(e));
 
 document.addEventListener("keydown", event => {
-  switch(event.isComposing || event.keyCode) {
-    case 87:
-      handlePlayerMove(player, "n"); break
-    case 83:
-      handlePlayerMove(player, "s"); break
-    case 68:
-      handlePlayerMove(player, "e"); break
-    case 65:
-      handlePlayerMove(player, "w"); break
+  if (document.activeElement !== messageInput) {
+    switch(event.isComposing || event.keyCode) {
+      case 87:
+        handlePlayerMove(player, "n"); break
+      case 83:
+        handlePlayerMove(player, "s"); break
+      case 68:
+        handlePlayerMove(player, "e"); break
+      case 65:
+        handlePlayerMove(player, "w"); break
+    }
   }
 });
 
@@ -765,6 +781,12 @@ const handlePlayerMove = (player, dir) => {
     case "w": player.position.x -= 16; break
   };
   socket.emit("player_update", {x: player.position.x, y: player.position.y});
+};
+
+const handleSendMessage = (e) => {
+  e.preventDefault();
+  socket.emit("player_msg_send", e.target[0].value);
+  messageForm.reset();
 };
 
 // Redraws the canvas
