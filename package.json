@@ -2,7 +2,7 @@
   "name": "pulsar",
   "version": "0.0.1",
   "description": "",
-  "main": "server.js",
+  "main": "./src/server/server.js",
   "scripts": {
     "start": "node ./src/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
