@@ -71,7 +71,7 @@ socket.on("update_entity", (entity) => {
 
 // The game screen where everything is drawn
 const canvas = document.querySelector(".game-screen");
-canvas.width = 512;
+canvas.width = 672;
 canvas.height = 512;
 
 // What happens when a user presses a button
